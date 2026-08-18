@@ -313,3 +313,49 @@ c=getchar();         //再调用一次，c就得到‘3’
 |:----:|:----:|:---:|:---:|
 |```&&```|逻辑与（AND）|**两个条件都成立**才为真|a>0&&a<10:a在0到10之间|
 |```||```|逻辑或（OR）|**至少一个条件成立**就为真|a<0||a>10:a小于0或大于10|
+## 处理整数
+```
+#include<bits/stdc++.h>
+using namespace std;
+
+//快读
+int read(){
+  int x=0,f=1;
+  char c=getchar();
+  while(c<'0'||c>'9'){
+    if(c=='-')f=-1;
+    c=getchar();        //c重新赋值了下一个字符
+  }
+  while(c>='0'&&c<='9'){
+    x=x*10+(c-'0');     //将字符转换为数字，上一个数字向前进一位，新数字加在末尾
+    c=getchar();
+  }
+  return x*f;           //处理正负号
+}
+```
+```
+#include<bits/stdc++.h>
+using namespace std;
+
+int read(){
+  int x=0,f=1;
+  char c=getchar();
+  while(c<'0'||c>'9'){
+    if(c=='-')f=-1;
+  c=getchar();
+  }
+  while(c>='0'&&c<='9'){
+    x=x*10+(c-'0');
+    c=getchar();
+ }
+ return x*f;
+}
+
+int main(){
+  int T=read();
+  while(T--){
+    int n=read();
+  }
+  return 0;
+}
+```
