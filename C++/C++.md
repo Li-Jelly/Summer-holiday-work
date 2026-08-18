@@ -157,6 +157,27 @@ for (auto$pair:scorea){
   cout<<pair.first<<"->"<<pair.second<<endl;
 }
 ```
+```
+map<string, int> scores = {
+    {"张三", 95},
+    {"李四", 88},
+    {"王五", 78}
+};
+
+            键（Key）      值（Value）
+            ┌──────┐    ┌──────┐
+            │ 张三 │───▶│  95  │
+            ├──────┤    ├──────┤
+            │ 李四 │───▶│  88  │
+            ├──────┤    ├──────┤
+            │ 王五 │───▶│  78  │
+            └──────┘    └──────┘
+
+通过键访问：
+scores["张三"] → 95
+scores.find("李四") → 返回指向 (李四, 88) 的迭代器
+scores.find("赵六") → 返回 end()（因为不存在）
+```
 ## set(集合)
 ### 是什么
 ```set```是一个**不允许重复元素**的容器，而且元素会自动从小到大排序。内部也是一棵红黑树
@@ -205,4 +226,66 @@ using namespace std;
 vecttor<int> v={5,2,8,1,9};
 
 //默认升序排序
+sort(v.begin(),v.end());      //v变成{1，2，5，8，9}
+
+//降序排序（使用greater仿函数）
+sort(v.begin(),v.end(),greater<int>());//v变成{9，8，5，2，1}
+
+//自定义排序规则（比如按绝对值排序）
+sort(v.begin(),v.end(),[](int a,int b){
+  return abs(a)<abs(b);
+});
+
+//对普通C数组排序也一样可以
+int arr[]={4,2,7,1};
+sort(arr,arr+4);              //数组名当作指针，arr+4指向末尾
+```
+## C++标准库头文件
+|头文件|包含内容|
+|:----:|:----:|
+|```#include<vector>```|```vector```容器的定义|
+|```include<map>```|```map``` ```multimap```容器的定义|
+|```#include<set>```|```set``` ```multiset```容器的定义|
+|```#include<algorithm>```|```sort``` ```find```等算法函数|
+|```#include<iostream>```|```cin``` ```cout```等输入输出流|
+## C++标准库
+```
+C++ 标准库（整个大仓库）
+│
+├── STL 部分（数据结构和算法）
+│   ├── <vector>
+│   ├── <map>
+│   ├── <set>
+│   ├── <algorithm>
+│   └── <iterator>
+│
+├── 输入输出库
+│   ├── <iostream>（cin、cout）
+│   ├── <fstream>（文件读写）
+│   └── <sstream>（字符串流）
+│
+├── 字符串库
+│   └── <string>（std::string）
+│
+├── 数学库
+│   └── <cmath>（sin、cos、sqrt）
+│
+├── 多线程库（C++11起）
+│   └── <thread>、<mutex>
+│
+└── 其他工具库
+    ├── <memory>（智能指针）
+    ├── <chrono>（时间处理）
+    └── <random>（随机数生成）
+```
+```
+// 想用 vector，就只包含 vector
+#include <vector>
+
+// 想用 map，就只包含 map  
+#include <map>
+
+// 想两个都用，就两个都包含
+#include <vector>
+#include <map>
 ```
