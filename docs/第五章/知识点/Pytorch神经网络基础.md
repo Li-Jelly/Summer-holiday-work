@@ -40,3 +40,90 @@ net(X)
 y=net(X)
 ```
 总结：这是一个经典的**两层MLP**（多层感知机），常用于20维特征输入、10分类的任务
+## 顺序块（MySequential函数的实现）
+```
+class MySequential(nn.Module):
+  def __init__(self,*arqs):
+    super().__init__()
+    for block in args:
+      self._modules[block]=block
+
+  def forward(self,X):
+    for block in self._modules.values():
+      X=block(X)
+    return X
+
+net=MySequential(nn.Linear(20,256),nn.ReLU(),nn.Linear(256,10))
+net(X)
+```
+## 在正向传播函数中执行代码
+```
+class FixedHiddenMLP(nn.Mogule):
+  def __init__(self):
+    super().__init__()
+    self.rand_weight=torch.rand((20,20),requires_grad=False)
+    self.linear=nn.Linear(20,20)
+
+  def forward(self,X):
+    X=self.linear(X)
+    X=F.relu(torch.mm(X,self.rand_weight)+1)\
+    X=self.linear(X)
+    while X.abs().sum()>1:
+      x/=2
+    return X.sum()
+
+net=FixedHiddenMLP()
+net(X)
+```
+## 混合搭配各种组合块的方法
+```
+class NestMLP(nn.Module):
+  def __init__(self):
+    super().__init__()
+    self.net=nn.Sequential(nn.Linear(20,64),nn.ReLU(),
+                           nn.Linear(64,32),nn.ReLU())
+    self.linear=nn.Linear(32,16)
+
+  def forward(self,X):
+    return self.linear(self.net(X))
+
+chimera=nn.Sequential(NestMLP(),nn.Linear(16,20),FixedHiddenMLP())
+chimera(X)
+```
+## 自定义块
+```
+class MLP(nn.Module):
+  def __init__(self):
+    super().__init__()
+    self.hidden=nn.Linear(20,256)
+    self.out=nn.Linear(256,10)
+
+  def forward(self,X):
+    return self.out(F.relu(self.hidden(X)))
+```
+```
+def __init__(self):
+```
++ __init__函数：定义类、定义参数
+```
+self.hiden=nn.Linear(20,256)
+```
+隐藏层（全连接层），存在类的成员变量里
+```
+self.out=nn.Linear(256,10)
+```
+输出层（全连接层），存在类的成员变量里
+```
+  def forward(self,X):
+    return self.out(F.relu(self.hidden(X)))
+```
++ 前向函数，输入是X
++ 输入先经过hidden,得到隐藏层的输出
++ 用Module里的ReLU函数，激活后放进输出
+## 实例化多层感知机的层，然后在每次调用正向传播函数时调用这些层
+```
+net=MLP()
+net(X)
+```
+## 顺序块
+ 
