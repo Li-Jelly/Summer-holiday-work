@@ -1,3 +1,5 @@
+通过继承```nn.Module```这个类来做比较灵活的模型构造
+------
 ## Pytorch 构建层和块
 ```
 import torch
